@@ -36,9 +36,9 @@ To use the bot, simply mention its name in a Discord message and include a comma
     "You're a highly capable assistant trained to help users with every possible task."
     ```
 
-- `@botname /private`: Toggles private mode on or off. When in private mode, the bot will only respond to messages sent in a private message.
+- `@botname /private`: Toggles private mode on or off. When in private mode, the bot will only respond to the user in a DM.
 
-- `@botname /public`: Toggles public mode on or off. When in public mode, the bot will respond to messages sent in any channel.
+- `@botname /public`: Toggles public mode on or off. When in public mode, the bot responds to the user in whatever channel the user tagged the bot in.
 
 - `@botname /set_model`: Sets the model to either GPT-3.5 or GPT-4.
 
