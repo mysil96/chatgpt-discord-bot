@@ -2,7 +2,7 @@
 
 This is a basic Python Discord bot that provides an interface for interacting with OpenAI's GPT-3.5 and GPT-4 models to generate text based on user input. The bot listens for messages that mention its name, and then looks for specific commands within those messages. The commands tell the bot what to generate and how to generate it.
 
-This bot currently does NOT support back-and-forth chatting- it only provides a one-time response. is is meant to be a basic script for other people to use as a simple starting point. 
+This bot currently does NOT support back-and-forth chatting- it only provides a one-time response. it is meant to be a basic script for other people to use as a simple starting point. 
 
 ## Preview
 
