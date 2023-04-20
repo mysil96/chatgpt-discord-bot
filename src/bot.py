@@ -9,6 +9,7 @@ from src.utils import send_message
 
 discord_token = os.getenv("discord_token", default=None)
 logger = log.logger
+defaultSysText = config.generalSys
 
 # Define function to run Discord bot
 def run_discord_bot():
@@ -16,7 +17,7 @@ def run_discord_bot():
     intents = discord.Intents.default()
     intents.message_content = True
     activity = discord.Activity(
-        type=discord.ActivityType.watching, name="/private | /public"
+        type=discord.ActivityType.watching, name="you play with yourself"
     )
     # Create Discord bot with command prefix, intents, and activity
     client = commands.Bot(command_prefix="/", intents=intents, activity=activity)
@@ -53,9 +54,7 @@ def run_discord_bot():
                 return
             # Check if "/system" command is present in message
             elif "/system" not in args:
-                system_text = (
-                    "You're a highly capable assistant trained to help users with every possible task."
-                )
+                system_text = defaultSysText
             # Check if "/system" command appears after mention of bot and before "/input" command
             elif "/system" in args:
                 if not (
@@ -139,7 +138,7 @@ def run_discord_bot():
             await interaction.followup.send(
                 "> **Info: Next, the response will be sent to the channel directly. If you want to switch back to private mode, use `/private`**"
             )
-            logger.info(f"{interaction.user} \x1b[31mSwitched to public mode.\x1b[0m")
+            logger.info(f"{interaction.user} \x1b[31mswitched to public mode.\x1b[0m")
         # If already in public mode, send message
         else:
             await interaction.followup.send(
@@ -204,6 +203,50 @@ def run_discord_bot():
         # Return the current OpenAI model
         await interaction.followup.send(f"Current OpenAI model: {model_name}")
         logger.info(f"{interaction.user} requested the current OpenAI model: {config.gptModel}")
+
+    # Define command to change default system text to programming assistant
+    @client.tree.command(name="coding_assistant", description="Sets the default system text for the AI to be a programming assistant.")
+    async def current_model(interaction: discord.Interaction):
+        # Defer response and set ephemeral to True
+        await interaction.response.defer(ephemeral=True)
+        
+        # Set default system text to programming preset
+        if defaultSysText != config.codingSys:
+            defaultSysText = config.codingSys
+            await interaction.followup.send(
+                "> **Info:** Default system text changed to **PROGRAMMER** preset."
+            )
+            logger.info(f"{interaction.user} \x1b[31mswitched to PROGRAMMER preset.\x1b[0m")
+        # If already in public mode, send message
+        else:
+            await interaction.followup.send(
+                "> **Warn:** You're already using the **PROGRAMMER** preset. To switch back to the general preset, use /general_assistant."
+            )
+            logger.warning(
+                f"{interaction.user} \x1b[31mwattempted to switch to PROGRAMMER preset, but was already using that preset\x1b[0m"
+            )
+
+    # Define command to change default system text to general assistant
+    @client.tree.command(name="general_assistant", description="Sets the default system text for the AI to be a general assistant.")
+    async def current_model(interaction: discord.Interaction):
+        # Defer response and set ephemeral to True
+        await interaction.response.defer(ephemeral=True)
+        
+        # Set default system text to programming preset
+        if defaultSysText != config.generalSys:
+            defaultSysText = config.generalSys
+            await interaction.followup.send(
+                "> **Info:** Default system text changed to **GENERAL** preset."
+            )
+            logger.info(f"{interaction.user} \x1b[31mswitched to GENERAL preset.\x1b[0m")
+        # If already in public mode, send message
+        else:
+            await interaction.followup.send(
+                "> **Warn:** You're already using the **GENERAL** preset."
+            )
+            logger.warning(
+                f"{interaction.user} \x1b[31mwattempted to switch to GENERAL preset, but was already using that preset\x1b[0m"
+            )
 
     # Run Discord bot with token
     if not discord_token:

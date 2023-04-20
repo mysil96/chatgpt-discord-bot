@@ -33,7 +33,7 @@ async def send_message(message, system_text, input_text):
     
     # Parse the response from OpenAI and format it for the user
     parsedResponse = response["choices"][0]["message"]["content"]
-    
+
     # Add metadata indicating who the response is for
     response = '> ** Response to ' + str(
       author) + '**:' + '>\n\n' + parsedResponse
