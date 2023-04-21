@@ -121,7 +121,7 @@ def run_discord_bot():
             # Add user input to conversation history
             config.conversation_history.append({"role": "user", "content": input_text})
 
-            unique_roles = set(entry["role"] for entry in array)
+            unique_roles = set(entry["role"] for entry in config.conversation_history)
             combined_text = "".join(["partly" for _ in unique_roles]) + "".join([entry["content"] for entry in config.conversation_history])
 
             num_tokens = num_tokens_from_string(combined_text)
