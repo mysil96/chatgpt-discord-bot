@@ -19,7 +19,7 @@ To use this bot, you will need an OpenAI API key and a Discord bot token. You ca
 3. Set the following environment variables:
 
     - `discord_token`: Your Discord bot token
-    - `openai_key`: Your OpenAI API key
+    - `openai_api_key`: Your OpenAI API key
 4. Run the bot: `python main.py`
 
 ## Usage
