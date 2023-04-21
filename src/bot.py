@@ -337,12 +337,37 @@ def run_discord_bot():
         await interaction.response.defer(ephemeral=True)
         
         # Toggle conversation history on or off
-        config.toggle_conversation_history = False if config.toggle_conversation_history == True else False
+        config.toggle_conversation_history = False if config.toggle_conversation_history == True else True
         config.conversation_history = []
 
         # Return the current OpenAI model
         await interaction.followup.send(f"Chat history has been turned " + ("on" if config.toggle_conversation_history == True else "off") + ". Chat history has been wiped.")
         logger.info(f"{interaction.user} toggled convo history" + ("on" if config.toggle_conversation_history == True else "off"))
+    
+    @client.tree.command(name='help', description='List of available commands and their descriptions.')
+    async def help_command(interaction: discord.Interaction):
+        # Define the commands list
+        commands = [
+            {'name': '/help', 'description': 'List of available commands and their descriptions.'},
+            {'name': '/private', 'description': 'Toggle private bot messages.'},
+            {'name': '/public', 'description': 'Toggle public bot messages.'},
+            {'name': '/set_model', 'description': 'Switch between OpenAI models "gpt-3.5-turbo" or "gpt-4".'},
+            {'name': '/get_model', 'description': 'Get the current OpenAI model being used (GPT-4 by default).'},
+            {'name': '/programming_assistant', 'description': 'Sets the default system text for the AI to be a programming assistant.'},
+            {'name': '/scientific_assistant', 'description': 'Sets the default system text for the AI to be a scientific assistant.'},
+            {'name': '/eli5_assistant', 'description': 'Sets the default system text for the AI to be an ELI5 assistant.'},
+            {'name': '/general_assistant', 'description': 'Sets the default system text for the AI to be a general assistant.'},
+            {'name': '/reset_chat', 'description': 'Reset the current chat and chat history.'},
+            {'name': '/toggle_chat_history', 'description': 'Toggles chat history on or off.'}
+        ]
+
+        # Create an embed with the commands list
+        embed = discord.Embed(title='Available Commands:', color=discord.Color.blue())
+        for command in commands:
+            embed.add_field(name=command['name'], value=command['description'], inline=False)
+
+        # Send the embed as a response
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
     # Run Discord bot with token
     if not discord_token:
