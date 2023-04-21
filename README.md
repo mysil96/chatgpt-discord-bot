@@ -57,7 +57,7 @@ To use the bot, simply mention its name in a Discord message and include a comma
 
 - `/reset_chat`: Resets the current chat and chat history.
 
-- `/toggle_chat_history`: Toggles chat history on or off. When chat history is on, the bot will save and display previous messages from the chat. 
+- `/toggle_chat_history`: Toggles chat history on or off. When chat history is on, the bot will also use previous messages from the chat as input. 
 
 To use the bot, simply type one of the commands above in the chat with the bot. The bot will respond with the appropriate action or information. You can also tag the bot in a channel to have it respond publicly or DM the bot to have it respond privately.
 
