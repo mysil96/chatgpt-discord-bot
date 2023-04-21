@@ -1,3 +1,4 @@
+#log.py
 import os
 import logging
 import logging.handlers
@@ -14,47 +15,46 @@ class CustomFormatter(logging.Formatter):
     ]
     FORMATS = {
         level: logging.Formatter(
-            f'\x1b[30;1m%(asctime)s\x1b[0m {color}%(levelname)-8s\x1b[0m \x1b[35m%(name)s\x1b[0m -> %(message)s',
+            f'%(asctime)s {color}%(levelname)-8s\x1b[0m %(name)s -> %(message)s',
             '%Y-%m-%d %H:%M:%S'
         )
         for level, color in LEVEL_COLORS
     }
+    
+    FILE_FORMAT = logging.Formatter(
+        '%(asctime)s %(levelname)-8s %(name)s -> %(message)s',
+        '%Y-%m-%d %H:%M:%S'
+    )
 
     def format(self, record):
         formatter = self.FORMATS.get(record.levelno)
         if formatter is None:
-            formatter = self.FORMARS[logging.DEBUG]
+            formatter = self.FORMATS[logging.DEBUG]
 
-        # Override the traceback to always print in red
         if record.exc_info:
             text = formatter.formatException(record.exc_info)
             record.exc_text = f'\x1b[31m{text}\x1b[0m'
 
         output = formatter.format(record)
 
-        # Remove the cache layer
         record.exc_text = None
         return output
 
 
 def setup_logger() -> logging.Logger:
-    # create logger
     library, _, _ = __name__.partition('.')
     logger = logging.getLogger(library)
     logger.setLevel(logging.DEBUG)
-    # create console handler
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
     console_handler.setFormatter(CustomFormatter())
-    # create local log
     log_handler = logging.handlers.RotatingFileHandler(
-        filename='chatgpt_discord_bot.log',
+        filename='ChatGPT_Discord_Bot.log',
         encoding='utf-8',
-        maxBytes=32 * 1024 * 1024,  # 32 MiB
-        backupCount=2,  # Rotate through 5 files
+        maxBytes=32 * 1024 * 1024,
+        backupCount=2,
     )
-    log_handler.setFormatter(CustomFormatter())
-    # Add console handler to logger
+    log_handler.setFormatter(CustomFormatter.FILE_FORMAT)
     logger.addHandler(log_handler)
     logger.addHandler(console_handler)
 
