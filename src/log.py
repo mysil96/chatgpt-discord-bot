@@ -41,15 +41,15 @@ class CustomFormatter(logging.Formatter):
         return output
 
 
-def setup_logger() -> logging.Logger:
-    library, _, _ = __name__.partition('.')
+def setup_logger(desired_filename) -> logging.Logger:
+    library, _, _ = desired_filename.partition('.')
     logger = logging.getLogger(library)
     logger.setLevel(logging.DEBUG)
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
     console_handler.setFormatter(CustomFormatter())
     log_handler = logging.handlers.RotatingFileHandler(
-        filename='ChatGPT_Discord_Bot.log',
+        filename=desired_filename,
         encoding='utf-8',
         maxBytes=32 * 1024 * 1024,
         backupCount=2,
@@ -59,5 +59,3 @@ def setup_logger() -> logging.Logger:
     logger.addHandler(console_handler)
 
     return logger
-
-logger = setup_logger()
