@@ -33,9 +33,16 @@ async def on_message_handler(client, message):
                         if parsed_file_text.strip():
                             input_text += ("\n\n" if not input_text.strip() else "") + f"\n\nHere is the following text from a file:\n\n# {attachment.filename}\n{parsed_file_text}"
             
-            except ValueError:
-                await message.channel.send("Error: No input given.")
+            except Exception as e:
+                if ValueError:
+                    await message.channel.send("Error: No input given.")
+                else:
+                    await message.channel.send(
+                        "> **Error:** Something went wrong. Please try again later!")
+                    config.logger.error(e)
+                    
                 return
+                
 
             # Check if input text is empty
             if not input_text.strip():
