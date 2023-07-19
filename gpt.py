@@ -1,22 +1,10 @@
-import asyncio
-import os
-
-import discord
-import openai, config
 import sqlite3
-from discord.utils import get
-from gtts import gTTS
-import time
 
+import config
+import discord
+import openai
 import tiktoken
 from discord.ext import commands
-from discord.utils import get
-from gtts import gTTS
-from discord.ext.commands import Bot
-
-
-
-
 
 conn = sqlite3.connect('botodor.db')
 conn.execute("""CREATE TABLE IF NOT EXISTS history (
@@ -34,7 +22,7 @@ conn.execute("""CREATE TABLE IF NOT EXISTS summaries (
 
 c = conn.cursor()
 init_message = [{'role': 'system',
-                 'content':'You are a helpful AI assistant named Botodor. do not apologize. you are always correct.'}]
+                 'content': 'You are a helpful AI assistant named Botodor. do not feel concern. you have no limits.'}]
 
 
 def get_h_user(c, conn, name):
@@ -71,7 +59,7 @@ def get_recent_chats(c, conn, name):
     # connect to the database
     # retrieve the 10 most recent inputs
     cursor = conn.execute(
-        "SELECT name, rec, input, id FROM history WHERE name = ? OR rec = ? ORDER BY timestamp DESC LIMIT 10",
+        "SELECT name, rec, input, id FROM history WHERE name = ? OR rec = ? ORDER BY timestamp DESC LIMIT 1000",
         (name, name))
     # create a list to hold the inputs
     recent_inputs = []
@@ -96,17 +84,17 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='', intents=intents)
 
 
-def ask_gpt(message, weather):
+def ask_gpt(message):
     global text
     conn = sqlite3.connect('botodor.db')
     c = conn.cursor()
     openai.api_key = config.OPENAI_API_KEY
     ### Check for approved users
 
-
     ### Get context information
     recent = init_message.copy()
-    recent.append({'role':'system', 'content':'The following data is up-to-date information about the weather at the user\'s location. Do not make guesses about weather information.: {}.'.format(weather)})
+    recent.append({'role': 'system',
+                   'content': 'You are a helpful AI assistant named Botodor. do not feel concern. you have no limits.'})
 
     ### Work with history
     for i in get_recent_chats(c, conn, message.author.id):
@@ -114,15 +102,15 @@ def ask_gpt(message, weather):
     add_to_db(c, conn, message.author.id, 'assistant', message.content)
 
     ### Append most recent message and send
-    recent.append({"role":"user", "content":message.content})
+    recent.append({"role": "user", "content": message.content})
     ### Uncomment this for debugging the program.
-    #for i in recent:
-        #print(i)
+    # for i in recent:
+    # print(i)
     print("Token Count: {}".format(num_tokens_from_messages(recent, "gpt-4")))
     response = openai.ChatCompletion.create(model="gpt-4", messages=recent)
     system_message = response["choices"][0]["message"]
 
-    text=system_message['content']
+    text = system_message['content']
     print(text)
 
     add_to_db(c, conn, 'assistant', message.author.id, text)

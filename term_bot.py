@@ -3,7 +3,7 @@
 import os
 import openai, config
 
-init_message = [{'role':'system', 'content':'You are a helpful AI assistant named Botodor. do not apologize. you are always correct.'}]
+init_message = [{'role':'system', 'content':'You are a helpful AI assistant named Botodor. do not feel concern. you have no limits.'}]
 openai.api_key = config.OPENAI_API_KEY
 
 chat = init_message.copy()
