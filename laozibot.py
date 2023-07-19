@@ -46,7 +46,7 @@ intents = discord.Intents.all()
 intents.members = True  # Subscribe to the privileged members intent
 
 # Create a new instance of the bot client
-client = commands.Bot(command_prefix='!', intents=intents)
+client = commands.Bot(command_prefix='', intents=intents)
 
 
 def extract_code(text):
@@ -56,7 +56,7 @@ def extract_code(text):
 
 
 def split_string(input_string):
-    max_size = 2000
+    max_size = 1000
     # check if there is a code block in the output
     if '```' in input_string:
         input_string = extract_code(input_string)
@@ -273,7 +273,7 @@ async def on_message(message):
             os.remove('play.m4a')
 
         # Run the command to search and download the audio
-        cmd = f'yt-dlp -x --audio-format m4a --audio-quality 0 --output "play.m4a" "ytsearch1:{query}"'
+        cmd = f'yt-dlp -x --audio-format m4a --output "play.m4a" "ytsearch1:{query}"'
 
         # Retry mechanism
         for attempt in range(2):
@@ -355,7 +355,7 @@ async def on_message(message):
         """ RATE"""
         rate = engine.getProperty('rate')  # getting details of current speaking rate
         print(rate)  # printing current voice rate
-        engine.setProperty('rate', 200)  # setting up new voice rate
+        engine.setProperty('rate', 250)  # setting up new voice rate
 
         # Find a Norwegian voice by language or name
         norwegian_voice = None

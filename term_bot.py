@@ -15,7 +15,7 @@ def get_lines():
     with open(filename, "r") as file:
         lines = file.readlines()
         i = len(lines) - 1
-        while i >= 0 and len(last_10_messages) < 10:
+        while i >= 0 and len(last_10_messages) < 1000:
             line = lines[i].strip()
             if line.startswith("User:") or line.startswith("Assistant:"):
                 message = line
