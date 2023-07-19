@@ -1,0 +1,7 @@
+__*
+config.py
+*.db
+history.txt
+approved_users.txt
+*.bak
+*.mp3

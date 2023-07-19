@@ -1,10 +1,4 @@
-beautifulsoup4==4.8.2
 discord.py==2.2.2
-lxml==4.9.2
 openai==0.27.4
-Pillow==9.4.0
-PyPDF2==3.0.1
-python_docx==0.8.11
-python_pptx==0.6.21
-textract==1.6.5
-tiktoken==0.3.3
+pyowm==3.3.0
+PyNaCl
