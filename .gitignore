@@ -5,3 +5,4 @@ history.txt
 approved_users.txt
 *.bak
 *.mp3
+.env
